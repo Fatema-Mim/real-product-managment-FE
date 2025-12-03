@@ -13,8 +13,8 @@ const productFormSchema = z.object({
   description: z.string().optional(),
   images: z.any().optional(),
   categories: z.array(z.string()).min(1, "At least one category is required"),
-  price: z.union([z.string(), z.number()]).pipe(z.coerce.number().positive("Price must be positive")),
-  stock: z.union([z.string(), z.number()]).pipe(z.coerce.number().int().min(0, "Stock cannot be negative")),
+  price: z.number().positive("Price must be positive"),
+  stock: z.number().int().min(0, "Stock cannot be negative"),
   status: z.enum(["Active", "Inactive"]),
 });
 
