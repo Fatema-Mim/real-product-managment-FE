@@ -1,0 +1,68 @@
+import React from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { LucideIcon } from "lucide-react";
+
+interface StatusCard {
+  title: string;
+  value: string | number;
+  description?: string;
+  icon?: LucideIcon;
+  trend?: {
+    value: string;
+    direction: "up" | "down";
+    icon?: React.ReactNode;
+  };
+}
+
+interface ProductStatusProps {
+  stats: StatusCard[];
+  columns?: 2 | 3 | 4;
+}
+
+export function ProductStatus({ stats, columns = 4 }: ProductStatusProps) {
+  const gridCols = {
+    2: "md:grid-cols-2",
+    3: "md:grid-cols-3",
+    4: "md:grid-cols-2 lg:grid-cols-4",
+  };
+
+  return (
+    <div className={`grid gap-4 ${gridCols[columns]}`}>
+      {stats.map((stat, index) => (
+        <Card key={index}>
+          <CardHeader
+            className={`flex flex-row items-center justify-between space-y-0 pb-2 ${
+              stat.icon ? "" : "pb-3"
+            }`}
+          >
+            <CardTitle className="text-sm font-medium text-muted-foreground">
+              {stat.title}
+            </CardTitle>
+            {stat.icon && <stat.icon className="size-4 text-muted-foreground" />}
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{stat.value}</div>
+            {stat.description && (
+              <p className="text-xs text-muted-foreground">{stat.description}</p>
+            )}
+            {stat.trend && (
+              <p className="flex items-center gap-1 text-xs text-muted-foreground">
+                {stat.trend.icon}
+                <span
+                  className={
+                    stat.trend.direction === "up"
+                      ? "text-green-500"
+                      : "text-red-500"
+                  }
+                >
+                  {stat.trend.value}
+                </span>
+                <span>from last month</span>
+              </p>
+            )}
+          </CardContent>
+        </Card>
+      ))}
+    </div>
+  );
+}
