@@ -90,7 +90,6 @@ export default function ProductDetailsPage() {
           )}
         </div>
 
-        {/* Product Information */}
         <div className="space-y-6">
           <div className="rounded-lg border p-6 space-y-4">
             <h2 className="text-lg font-semibold">Product Information</h2>

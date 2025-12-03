@@ -13,18 +13,12 @@ export default function DashboardLayout({
   return (
     <SidebarProvider>
       <div className="flex min-h-screen w-full">
-        {/* Sidebar */}
         <AppSidebar />
 
-        {/* Main Content */}
         <div className="flex flex-1 flex-col">
-          {/* Header */}
           <Header />
 
-          {/* Page Content */}
-          <main className="flex-1 p-6">
-            {children}
-          </main>
+          <main className="flex-1 p-6">{children}</main>
         </div>
       </div>
       <Toaster />
