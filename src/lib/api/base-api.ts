@@ -7,10 +7,6 @@ export const baseApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: API_BASE_URL,
     credentials: "include",
-    prepareHeaders: (headers) => {
-      headers.set("Content-Type", "application/json");
-      return headers;
-    },
   }),
   tagTypes: ["Auth", "Products", "Categories"],
   endpoints: () => ({}),
