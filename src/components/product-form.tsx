@@ -274,7 +274,7 @@ export function ProductForm({
             type="number"
             placeholder="0.00"
             step="0.01"
-            {...register("price")}
+            {...register("price", { valueAsNumber: true })}
           />
           {errors.price && (
             <p className="text-sm text-red-500">{errors.price.message}</p>
@@ -286,7 +286,7 @@ export function ProductForm({
             id="stock"
             type="number"
             placeholder="0"
-            {...register("stock")}
+            {...register("stock", { valueAsNumber: true })}
           />
           {errors.stock && (
             <p className="text-sm text-red-500">{errors.stock.message}</p>
