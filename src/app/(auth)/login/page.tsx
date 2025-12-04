@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -20,6 +20,7 @@ type LoginForm = z.infer<typeof loginSchema>;
 export default function LoginPage() {
   const [login, { isLoading }] = useLoginMutation();
   const [error, setError] = useState<string>("");
+  const [shouldRedirect, setShouldRedirect] = useState(false);
 
   const {
     register,
@@ -33,13 +34,27 @@ export default function LoginPage() {
     },
   });
 
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      window.location.href = "/dashboard";
+    }
+  }, []);
+
+  useEffect(() => {
+    if (shouldRedirect) {
+      window.location.href = "/dashboard";
+    }
+  }, [shouldRedirect]);
+
   const onSubmit = async (data: LoginForm) => {
     try {
       setError("");
-      await login(data).unwrap();
-      setTimeout(() => {
-        window.location.href = "/dashboard";
-      }, 1000);
+      const result = await login(data).unwrap();
+      if (result.token) {
+        localStorage.setItem("token", result.token);
+        setShouldRedirect(true);
+      }
     } catch (err) {
       const errorMessage =
         (err as { data?: { message?: string } })?.data?.message ||
