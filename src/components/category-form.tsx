@@ -19,6 +19,7 @@ interface CategoryFormProps {
   submitButtonText?: string;
   cancelButtonText?: string;
   isLoading?: boolean;
+  existingCategories?: string[];
 }
 
 export function CategoryForm({
@@ -28,11 +29,13 @@ export function CategoryForm({
   submitButtonText = "Submit",
   cancelButtonText = "Cancel",
   isLoading = false,
+  existingCategories = [],
 }: CategoryFormProps) {
   const {
     register,
     handleSubmit,
     formState: { errors },
+    setError,
   } = useForm<CategoryFormData>({
     resolver: zodResolver(categoryFormSchema),
     defaultValues: {
@@ -41,8 +44,21 @@ export function CategoryForm({
   });
 
   const onFormSubmit = (data: CategoryFormData) => {
+    const trimmedName = data.name.trim();
+    const isDuplicate = existingCategories.some(
+      (cat) => cat.toLowerCase() === trimmedName.toLowerCase()
+    );
+
+    if (isDuplicate && trimmedName.toLowerCase() !== defaultValues?.name?.toLowerCase()) {
+      setError("name", {
+        type: "manual",
+        message: "A category with this name already exists",
+      });
+      return;
+    }
+
     if (onSubmit) {
-      onSubmit(data);
+      onSubmit({ ...data, name: trimmedName });
     }
   };
 

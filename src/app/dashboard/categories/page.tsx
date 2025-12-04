@@ -159,6 +159,7 @@ export default function CategoriesPage() {
           submitButtonText={categoryToEdit ? "Update Category" : "Add Category"}
           cancelButtonText="Cancel"
           isLoading={categoryToEdit ? isUpdating : isAdding}
+          existingCategories={categories.map((cat) => cat.name)}
         />
       </FormModal>
 
