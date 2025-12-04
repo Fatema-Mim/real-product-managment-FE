@@ -5,27 +5,18 @@ import { useRouter } from "next/navigation";
 
 export function AuthGuard({ children }: { children: React.ReactNode }) {
   const router = useRouter();
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [isChecking, setIsChecking] = useState(true);
+  const [isAuthenticated] = useState(() => {
+    if (typeof window !== "undefined") {
+      return !!localStorage.getItem("token");
+    }
+    return false;
+  });
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (!token) {
-      router.push("/login");
-      setIsChecking(false);
-    } else {
-      setIsAuthenticated(true);
-      setIsChecking(false);
+    if (!isAuthenticated) {
+      router.replace("/login");
     }
-  }, [router]);
-
-  if (isChecking) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <p className="text-muted-foreground">Loading...</p>
-      </div>
-    );
-  }
+  }, [isAuthenticated, router]);
 
   if (!isAuthenticated) {
     return null;
