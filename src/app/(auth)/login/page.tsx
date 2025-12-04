@@ -39,6 +39,7 @@ export default function LoginPage() {
     try {
       setError("");
       await login(data).unwrap();
+      router.refresh();
       router.push("/dashboard");
     } catch (err) {
       const errorMessage =
