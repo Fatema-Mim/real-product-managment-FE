@@ -39,7 +39,7 @@ export default function LoginPage() {
       await login(data).unwrap();
       setTimeout(() => {
         window.location.href = "/dashboard";
-      }, 100);
+      }, 1000);
     } catch (err) {
       const errorMessage =
         (err as { data?: { message?: string } })?.data?.message ||
